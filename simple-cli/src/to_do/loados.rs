@@ -14,5 +14,5 @@ pub fn print_os_load() {
     println!("                          ))    \\#H\\       `\"Y###");
     println!("                          \"      }}#H");
     println!("");
-    println!("Please log in as root:");
+    thread::sleep(time::Duration::from_secs(1));
 }

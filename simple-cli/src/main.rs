@@ -1,26 +1,36 @@
 mod to_do;
 use std::io;
-use std::io::Write;
-use crate::to_do::{note, loados};
+use std::io::{Write, stdout};
+use crate::to_do::{note, loados, help};
+use crossterm::{
+    ExecutableCommand,
+};
+use std::fs::{File, read_dir};
+use std::env;
+use std::path::Path;
+use std::{thread, time};
 
 enum Functions {
     Quit,
     NotesCmd(note::Command),
     Clear,
+    Help,
+    Touch(String),
+    Ls,
 }
 
 fn main() {
     loados::print_os_load();
     let mut pass = String::new();
-
     loop {
+        println!("Please log in as root:");
         print!("> ");
         io::stdout().flush().unwrap();
         io::stdin().read_line(&mut pass).expect("Something went wrong");
         pass = pass.trim().to_string();
         match pass.as_str() {
             "admin" => { println!("Welcome, root!"); break; },
-            _ => println!("Wrong, please try again!"),
+            _ => { println!("Wrong, please try again!"); pass = String::new(); }
         }
     }
     let mut to_do_list = note::ToDoList::new();
@@ -47,7 +57,10 @@ fn main() {
             },
             "quit" => Functions::Quit,
             "clr" => Functions::Clear,
-            _ => panic!("You need to provide an available command"),
+            "touch" => Functions::Touch(args[1].to_string()),
+            "ls" => Functions::Ls,
+            "help" => Functions::Help,
+            _ => { println!("You need to provide an available command"); Functions::Help },
         };
 
         match command {
@@ -65,9 +78,27 @@ fn main() {
                 to_do_list.display_list();
             },
             Functions::Clear => {
-                println!("{}[2J", 27 as char);
+                print!("\x1B[2J");
+                stdout().execute(crossterm::cursor::MoveTo(0, 0)).expect("something went wrong");
+            },
+            Functions::Touch(task) => {
+                let file_dir = Path::new("files/");
+                env::set_current_dir(&file_dir).expect("There is no files folder");
+                File::create(task).expect("Something went wrong creating the file");
+                env::set_current_dir(Path::new("../")).expect("There is no such folder");
+            },
+            Functions::Ls => {
+                let paths = read_dir("files/").unwrap();
+                for path in paths {
+                    println!("{}", path.unwrap().path().display());
+                }
+            },
+            Functions::Help => {
+                help::help();
             },
             Functions::Quit => {
+                println!("Goodbye!");
+                thread::sleep(time::Duration::from_secs(1));
                 break;
             }
         }
