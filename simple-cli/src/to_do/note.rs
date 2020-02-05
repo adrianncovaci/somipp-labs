@@ -34,11 +34,20 @@ impl ToDoList {
     }
 
     pub fn complete_to_do(&mut self, index: usize) {
-        self.list[index-1].completed = 'X';
+        println!("{}", index);
+        if self.list.len() < index {
+            println!("Index out of bound");
+        } else {
+            self.list[index-1].completed = 'X';
+        }
     }
 
     pub fn delete_to_do(&mut self, index: usize) {
-        &self.list.remove(index-1);
+        if self.list.len() < index {
+            println!("Index out of bound");
+        } else {
+            &self.list.remove(index-1);
+        }
     }
 
     pub fn display_list(&self) {

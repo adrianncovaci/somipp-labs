@@ -30,6 +30,7 @@ fn main() {
         pass = pass.trim().to_string();
         match pass.as_str() {
             "admin" => { println!("Welcome, root!"); break; },
+            "quit" => {return;}
             _ => { println!("Wrong, please try again!"); pass = String::new(); }
         }
     }
@@ -49,9 +50,30 @@ fn main() {
             "todo" => {
                 match args[1] {
                     "get" => Functions::NotesCmd(note::Command::Get),
-                    "add" => Functions::NotesCmd(note::Command::Add(args[2].to_string())),
-                    "delete" => Functions::NotesCmd(note::Command::Delete(args[2].parse().expect("Please provide an integer index"))),
-                    "complete" => Functions::NotesCmd(note::Command::Complete(args[2].parse().expect("Please provide an integer index"))),
+                    "add" => {
+                        if args.len() < 3 {
+                            help::help();
+                            continue;
+                        } else {
+                        Functions::NotesCmd(note::Command::Add(args[2].to_string()))
+                        }
+                    },
+                    "delete" => {
+                        if args.len() < 3 {
+                            help::help();
+                            continue;
+                        } else {
+                        Functions::NotesCmd(note::Command::Delete(args[2].parse().expect("Please provide an integer index")))
+                        }
+                    },
+                    "complete" => {
+                        if args.len() < 3 {
+                            help::help();
+                            continue;
+                        } else {
+                        Functions::NotesCmd(note::Command::Complete(args[2].parse().expect("Please provide an integer index")))
+                        }
+                    },
                     _ => panic!("You need to provide an available command, use /help to get a list of commands"),
                 }
             },
