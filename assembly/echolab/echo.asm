@@ -13,12 +13,9 @@ mainloop:
 
 
 jmp $
-%include "resources.asm"
-
-    
+%include "resources.asm" 
 
 
-buffer times 64 db 0
 prompt: db 'os$> ', 0
 msg: db 'Hello, World', 0
 times 510-($-$$) db 0

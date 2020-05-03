@@ -1,0 +1,10 @@
+I've divided the workflow into 2 .asm files. Inside Resources I have the functions that I may use in the future, the echo.asm is just the main file.
+In order to compile the files, I've used nasm version 2.14.02, and in order to emulate the boot process, I've used Qemu version 4.2.0. This process can also
+be done by using the "adriancovaci" script to generate an img file which can be used as a floppy drive.
+
+To compile the files:
+    nasm -f bin resources.asm -o resources.bin
+    nasm -f bin echo.asm -o echo.bin
+
+To emulate:
+    qemu-system-x86_64 echo.bin
