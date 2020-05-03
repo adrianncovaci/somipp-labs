@@ -85,8 +85,8 @@ print_second:
     inc si
     cmp al, 0
     jz end_second_string
-
     jmp print_second
+
 end_second_string:
     mov ah, 2
     mov bh, 0

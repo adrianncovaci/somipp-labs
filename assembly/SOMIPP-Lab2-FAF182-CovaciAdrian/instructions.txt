@@ -1,0 +1,17 @@
+hello.asm -> Assembly file to compile
+adriancovaci -> Bash script which compiles the hello.asm file and generates an
+.img file (You need to have GNU BASH installed in order to run it).
+
+In order to run the script file, one can make it executable by running "chmod +x
+adriancovaci" into the terminal. Then we can run the script by providing 2
+arguments, the source .asm file, and the desired bootable floppy image file.
+
+e.g "./adriancovaci hello.asm hello.img"
+
+The NASM assembler should be installed in order to run the script. The script was successfully
+tested on version:
+
+NASM version 2.14.02
+
+A .bin and a .img file will be generated. The .img file can be used, later on,
+on virtual environment. Personally, I've used the 6.1.4 version of VirtualBox.
